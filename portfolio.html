@@ -73,7 +73,182 @@
             </div>
         </div>
     </section>
+
+    <section id="interactive-buttons" class="text-center my-5">
+        <h2 class="pb-2 border-bottom">Interactive Buttons</h2>
+        <button class="btn btn-secondary m-2" onclick="changeBackgroundImage('newback.jpg')">Change Background</button>
+        <button class="btn btn-secondary m-2" onclick="resetBackground()">Reset Background</button>
+        <button class="btn btn-secondary m-2" onclick="changeText()">Change Text</button>
+        <button class="btn btn-secondary m-2" onclick="changeImage()">Change Image</button>
     
+        <p id="dynamicText">Pls don't click on the buttons!</p>
+        <img id="dynamicImage" src="funny.jpg" alt="Dynamic Image" class="img-fluid" style="width: 400px;">
+    </section>
+    
+    <script>
+        function changeBackgroundImage(image) {
+            document.body.style.backgroundImage = `url('${image}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+        }
+    
+        function resetBackground() {
+            document.body.style.backgroundImage = '';
+        }
+    
+        function changeText() {
+            const textElement = document.getElementById('dynamicText');
+            textElement.innerHTML = textElement.innerHTML === "Pls don't click on the buttons!" ? 
+                "Why don't you listen to me :(" : 
+                "Pls don't click on the buttons!";
+        }
+    
+        function changeImage() {
+            const imageElement = document.getElementById('dynamicImage');
+            if (imageElement.src.includes('funny.jpg')) {
+                imageElement.src = 'sad.jpg';
+            } else {
+                imageElement.src = 'funny.jpg';
+            }
+        }
+    </script>    
+    
+    <section id="todo-list" class="text-center my-5">
+        <h2 class="pb-2 border-bottom">To-Do List</h2>
+        <input type="text" id="taskInput" placeholder="Enter a task" class="form-control w-50 d-inline-block">
+        <button class="btn btn-primary mt-2" onclick="addTask()">Add Task</button>
+        <ul id="taskList" class="list-group w-50 mx-auto mt-3"></ul>
+    </section>
+    
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskValue = taskInput.value;
+    
+            if (taskValue === "") {
+                alert("You must type something!");
+                return;
+            }
+    
+            const taskList = document.getElementById('taskList');
+            const li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between align-items-center';
+            li.textContent = taskValue;
+    
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-danger btn-sm';
+            deleteBtn.textContent = 'Delete';
+            deleteBtn.onclick = function () {
+                taskList.removeChild(li);
+            };
+    
+            li.appendChild(deleteBtn);
+            taskList.appendChild(li);
+            taskInput.value = "";
+        }
+    </script>
+
+    <section id="sorting-tool" class="text-center my-5">
+        <h2 class="pb-2 border-bottom">Number Sorting Tool</h2>
+        <input type="text" id="numbersInput" placeholder="Enter numbers separated by commas" class="form-control w-50 d-inline-block">
+        <button class="btn btn-primary mt-2" onclick="sortNumbers('asc')">Sort Ascending</button>
+        <button class="btn btn-secondary mt-2" onclick="sortNumbers('desc')">Sort Descending</button>
+        <p class="mt-3">Sorted Numbers: <span id="sortedNumbers"></span></p>
+    </section>
+
+    <script>
+        function sortNumbers(order) {
+            const input = document.getElementById('numbersInput').value;
+            const numbers = input.split(',').map(Number);
+
+            if (numbers.some(isNaN)) {
+                alert('Please enter valid numbers only.');
+                return;
+            }
+
+            numbers.sort((a, b) => order === 'asc' ? a - b : b - a);
+            document.getElementById('sortedNumbers').textContent = numbers.join(', ');
+        }
+    </script>
+    
+
+    <section id="calculator" class="text-center my-5">
+        <h2 class="pb-2 border-bottom">Simple Calculator</h2>
+        <input type="number" id="num1" placeholder="First number" class="form-control w-25 d-inline-block">
+        <input type="number" id="num2" placeholder="Second number" class="form-control w-25 d-inline-block">
+        <br><br>
+        <button class="btn btn-success" onclick="calculate('+')">+</button>
+        <button class="btn btn-danger" onclick="calculate('-')">-</button>
+        <button class="btn btn-primary" onclick="calculate('*')">*</button>
+        <button class="btn btn-secondary" onclick="calculate('/')">/</button>
+        <button class="btn btn-warning" onclick="calculate('^')">Power</button>
+        <button class="btn btn-info" onclick="calculate('sqrt')">Square Root</button>
+        <p class="mt-3">Result: <span id="calcResult"></span></p>
+    </section>
+    
+    <script>
+        function calculate(operation) {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            let result;
+    
+            switch (operation) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 === 0) {
+                        alert("Cannot divide by zero!");
+                        return;
+                    }
+                    result = num1 / num2;
+                    break;
+                case '^':
+                    result = Math.pow(num1, num2);
+                    break;
+                case 'sqrt':
+                    result = `Square root of the first number is ${Math.sqrt(num1)} and square root of the second number is ${Math.sqrt(num2)}`;
+                    break;
+                default:
+                    alert("Invalid operation!");
+                    return;
+            }
+            document.getElementById('calcResult').textContent = result;
+        }
+    </script>
+
+<section id="tax-calculator" class="text-center my-5">
+    <h2 class="pb-2 border-bottom">Tax Calculator</h2>
+    <input type="number" id="carPrice" placeholder="Enter car price" class="form-control w-50 d-inline-block">
+    <button class="btn btn-primary mt-3" onclick="calculateTax()">Calculate Tax</button>
+    <p class="mt-3">Tax: <span id="taxResult"></span></p>
+</section>
+
+    <script>
+        function calculateTax() {
+            const price = parseFloat(document.getElementById('carPrice').value);
+            let tax;
+
+            if (price > 10000) {
+                tax = price * 0.25;
+            } else if (price >= 5000) {
+                tax = price * 0.20;
+            } else {
+                tax = price * 0.15;
+            }
+
+            document.getElementById('taxResult').textContent = tax;
+        }
+    </script>
+
+
     <section id="contact-me" class="text-center my-5">
         <h2 class="pb-2 border-bottom">Contact Me</h2>
         <div class="container">
